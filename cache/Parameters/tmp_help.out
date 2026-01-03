@@ -1,0 +1,57 @@
+usage: explain_parameters.py [-h] [--preprocessed-dir PREPROCESSED_DIR]
+                             [--pairs-csv PAIRS_CSV] [--data-root DATA_ROOT]
+                             [--baseline-model BASELINE_MODEL]
+                             [--proposed-model PROPOSED_MODEL]
+                             [--yolov8-weights YOLOV8_WEIGHTS]
+                             [--max-pairs MAX_PAIRS] [--seed SEED]
+                             [--examples-per-type EXAMPLES_PER_TYPE]
+                             [--out-json OUT_JSON]
+                             [--heatmap-prefix HEATMAP_PREFIX]
+                             [--batch-size BATCH_SIZE]
+                             [--region-sample-n REGION_SAMPLE_N]
+                             [--saliency-batch SALIENCY_BATCH]
+                             [--tf-intra-threads TF_INTRA_THREADS]
+                             [--tf-inter-threads TF_INTER_THREADS]
+                             [--io-workers IO_WORKERS]
+                             [--emb-cache-dir EMB_CACHE_DIR]
+                             [--status-json STATUS_JSON] [--debug]
+
+options:
+  -h, --help            show this help message and exit
+  --preprocessed-dir PREPROCESSED_DIR
+                        Path to Preprocessed dataset root
+  --pairs-csv PAIRS_CSV
+                        Optional CSV of pairs with columns
+                        img1_path,img2_path,label
+  --data-root DATA_ROOT
+                        Base folder for CSV image paths (default: data/)
+  --baseline-model BASELINE_MODEL
+  --proposed-model PROPOSED_MODEL
+  --yolov8-weights YOLOV8_WEIGHTS
+  --max-pairs MAX_PAIRS
+  --seed SEED
+  --examples-per-type EXAMPLES_PER_TYPE
+  --out-json OUT_JSON
+  --heatmap-prefix HEATMAP_PREFIX
+                        Subfolder under cache/Parameters/heatmaps (e.g.
+                        'validation')
+  --batch-size BATCH_SIZE
+  --region-sample-n REGION_SAMPLE_N
+                        How many random pairs to sample for avg region
+                        attribution per scenario
+  --saliency-batch SALIENCY_BATCH
+                        Batch size for gradient saliency computations (uses
+                        more RAM/VRAM but faster)
+  --tf-intra-threads TF_INTRA_THREADS
+                        Optional TF intra-op threads (0=leave default)
+  --tf-inter-threads TF_INTER_THREADS
+                        Optional TF inter-op threads (0=leave default)
+  --io-workers IO_WORKERS
+                        Parallel workers for image loading/resizing during
+                        embedding (0/1=off)
+  --emb-cache-dir EMB_CACHE_DIR
+                        Directory for persistent sqlite embedding caches
+                        (empty to disable)
+  --status-json STATUS_JSON
+                        Optional path to write progress status JSON
+  --debug               Include traceback in output on error

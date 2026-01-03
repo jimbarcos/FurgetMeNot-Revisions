@@ -1,0 +1,12 @@
+{
+  "state": "done",
+  "stage": "done",
+  "message": "Done",
+  "report": "cache/Parameters/tmp_check_report.json",
+  "overall_embeddings_done": 3008,
+  "overall_embeddings_total": 3008,
+  "overall_saliency_done": 36,
+  "overall_saliency_total": 36,
+  "percent": 100,
+  "updated_at": "2025-12-30T15:52:29Z"
+}

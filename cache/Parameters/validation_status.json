@@ -1,0 +1,12 @@
+{
+  "state": "done",
+  "stage": "done",
+  "message": "Done",
+  "report": "cache/Parameters/validation_report.json",
+  "overall_embeddings_done": 5912,
+  "overall_embeddings_total": 5912,
+  "overall_saliency_done": 136,
+  "overall_saliency_total": 136,
+  "percent": 100,
+  "updated_at": "2025-12-31T10:00:37Z"
+}

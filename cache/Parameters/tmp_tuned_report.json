@@ -1,0 +1,786 @@
+{
+  "generated_at": "2025-12-30T16:02:33Z",
+  "models": {
+    "baseline": {
+      "path": "model/Baseline/best_model.h5",
+      "type": "Siamese CNN (MobileNetV2)",
+      "param_count": 3064704,
+      "input": [
+        224,
+        224,
+        3
+      ]
+    },
+    "proposed": {
+      "path": "model/final_best_model.keras",
+      "type": "Siamese Capsule Network + Attention + MobileNetV2 Ensemble",
+      "param_count": 2257984,
+      "input": [
+        224,
+        224,
+        3
+      ],
+      "mnetv2_weight": 0.4,
+      "use_mnetv2": true
+    }
+  },
+  "dataset": {
+    "csv": "data/processed_data/val_pairs.csv",
+    "data_root": "data",
+    "label_strategy": "CSV label column (0/1) where 1 means similar.",
+    "pair_count": 1000
+  },
+  "parameters_definition": [
+    {
+      "name": "Ears Region",
+      "key": "ears_region",
+      "definition": "Top 20% of detected pet bounding box (proxy for ears/head top)."
+    },
+    {
+      "name": "Eyes Region",
+      "key": "eyes_region",
+      "definition": "Next 20% band inside the pet bbox (proxy for eyes/upper face)."
+    },
+    {
+      "name": "Muzzle/Snout Region",
+      "key": "muzzle_region",
+      "definition": "Middle 20% band inside the pet bbox (proxy for nose/snout)."
+    },
+    {
+      "name": "Fur/Body Region",
+      "key": "fur_body_region",
+      "definition": "Lower 40% inside the pet bbox (proxy for coat texture/pattern/body shape)."
+    },
+    {
+      "name": "Background",
+      "key": "background",
+      "definition": "Pixels outside detected pet bbox (proxy for background reliance / spurious cues)."
+    }
+  ],
+  "scenarios": {
+    "normal": {
+      "thresholds": {
+        "baseline": {
+          "best_threshold": 0.6177805066108704,
+          "metrics_at_best": {
+            "accuracy": 0.932,
+            "precision": 0.9083969465648855,
+            "recall": 0.9596774193548387,
+            "f1": 0.9333333333333332
+          },
+          "confusion": {
+            "TP": 476,
+            "TN": 456,
+            "FP": 48,
+            "FN": 20
+          }
+        },
+        "proposed": {
+          "best_threshold": 0.677209198474884,
+          "metrics_at_best": {
+            "accuracy": 0.9,
+            "precision": 0.8402061855670103,
+            "recall": 0.9858870967741935,
+            "f1": 0.9072356215213357
+          },
+          "confusion": {
+            "TP": 489,
+            "TN": 411,
+            "FP": 93,
+            "FN": 7
+          }
+        }
+      },
+      "region_attribution_avg_percent": {
+        "baseline": {
+          "ears_region": 15.980178520195214,
+          "eyes_region": 22.657280612033237,
+          "muzzle_region": 21.650151063999694,
+          "fur_body_region": 28.89830635569904,
+          "background": 10.81408344807282
+        },
+        "proposed": {
+          "ears_region": 14.37864722486255,
+          "eyes_region": 20.886097767195587,
+          "muzzle_region": 21.127121906867245,
+          "fur_body_region": 32.65807799204512,
+          "background": 10.950055109029496
+        }
+      },
+      "examples": {
+        "baseline": [
+          {
+            "kind": "TP",
+            "kind_expected": "TP",
+            "pair_index": 636,
+            "label_same": true,
+            "score": 0.9946675300598145,
+            "threshold": 0.6177805066108704,
+            "pred_same": true,
+            "img1": "data/(Preprocessed) breed_organized_with_images/pug/val/pug_169.jpg",
+            "img2": "data/(Preprocessed) breed_organized_with_images/pug/val/pug_188.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/validation_tuned/normal/baseline/tp_0636_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/validation_tuned/normal/baseline/tp_0636_img2.png",
+            "bbox1": {
+              "x1": 5,
+              "y1": 19,
+              "x2": 204,
+              "y2": 224
+            },
+            "bbox2": {
+              "x1": 22,
+              "y1": 12,
+              "x2": 201,
+              "y2": 224
+            },
+            "regions_img1": {
+              "background": 9.485641538712489,
+              "ears_region": 15.021116766709966,
+              "eyes_region": 19.541076897857135,
+              "muzzle_region": 18.467211435612708,
+              "fur_body_region": 37.48495336110772
+            },
+            "regions_img2": {
+              "background": 11.019461834198845,
+              "ears_region": 11.765143829901648,
+              "eyes_region": 23.335076007877824,
+              "muzzle_region": 22.259694811197445,
+              "fur_body_region": 31.620623516824242
+            }
+          },
+          {
+            "kind": "TN",
+            "kind_expected": "TN",
+            "pair_index": 309,
+            "label_same": false,
+            "score": 0.6153596043586731,
+            "threshold": 0.6177805066108704,
+            "pred_same": false,
+            "img1": "data/(Preprocessed) breed_organized_with_images/Bombay/val/Bombay_14.jpg",
+            "img2": "data/(Preprocessed) breed_organized_with_images/Birman/val/Birman_99.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/validation_tuned/normal/baseline/tn_0309_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/validation_tuned/normal/baseline/tn_0309_img2.png",
+            "bbox1": {
+              "x1": 23,
+              "y1": 14,
+              "x2": 215,
+              "y2": 203
+            },
+            "bbox2": {
+              "x1": 95,
+              "y1": 19,
+              "x2": 214,
+              "y2": 210
+            },
+            "regions_img1": {
+              "background": 14.542543219477492,
+              "ears_region": 15.889149722288284,
+              "eyes_region": 20.333970961814902,
+              "muzzle_region": 17.179472642396973,
+              "fur_body_region": 32.05486345402235
+            },
+            "regions_img2": {
+              "background": 24.510719755812577,
+              "ears_region": 12.062800772303326,
+              "eyes_region": 17.899079818863,
+              "muzzle_region": 19.028354226933992,
+              "fur_body_region": 26.4990454260871
+            }
+          },
+          {
+            "kind": "FP",
+            "kind_expected": "FP",
+            "pair_index": 709,
+            "label_same": false,
+            "score": 0.9594465494155884,
+            "threshold": 0.6177805066108704,
+            "pred_same": true,
+            "img1": "data/(Preprocessed) breed_organized_with_images/shiba_inu/val/shiba_inu_91.jpg",
+            "img2": "data/(Preprocessed) breed_organized_with_images/chihuahua/val/chihuahua_162.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/validation_tuned/normal/baseline/fp_0709_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/validation_tuned/normal/baseline/fp_0709_img2.png",
+            "bbox1": {
+              "x1": 24,
+              "y1": 21,
+              "x2": 209,
+              "y2": 201
+            },
+            "bbox2": null,
+            "regions_img1": {
+              "background": 17.044097319917025,
+              "ears_region": 12.861596070635107,
+              "eyes_region": 18.938787769431038,
+              "muzzle_region": 19.328822743956557,
+              "fur_body_region": 31.826696096060267
+            },
+            "regions_img2": {
+              "background": 0.0,
+              "ears_region": 11.427211289069486,
+              "eyes_region": 29.171533785598616,
+              "muzzle_region": 35.382505798526275,
+              "fur_body_region": 24.01874912680561
+            }
+          },
+          {
+            "kind": "FN",
+            "kind_expected": "FN",
+            "pair_index": 174,
+            "label_same": true,
+            "score": 0.6073179841041565,
+            "threshold": 0.6177805066108704,
+            "pred_same": false,
+            "img1": "data/(Preprocessed) breed_organized_with_images/saint_bernard/val/saint_bernard_41.jpg",
+            "img2": "data/(Preprocessed) breed_organized_with_images/saint_bernard/val/saint_bernard_197.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/validation_tuned/normal/baseline/fn_0174_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/validation_tuned/normal/baseline/fn_0174_img2.png",
+            "bbox1": {
+              "x1": 26,
+              "y1": 21,
+              "x2": 195,
+              "y2": 202
+            },
+            "bbox2": {
+              "x1": 29,
+              "y1": 26,
+              "x2": 198,
+              "y2": 203
+            },
+            "regions_img1": {
+              "background": 22.29937424559839,
+              "ears_region": 17.287519881573754,
+              "eyes_region": 20.419902035453234,
+              "muzzle_region": 17.134915483246424,
+              "fur_body_region": 22.85828835412821
+            },
+            "regions_img2": {
+              "background": 17.65230940049859,
+              "ears_region": 25.311920011660177,
+              "eyes_region": 33.012831406588504,
+              "muzzle_region": 14.841071386797314,
+              "fur_body_region": 9.181867794455401
+            }
+          }
+        ],
+        "proposed": [
+          {
+            "kind": "TP",
+            "kind_expected": "TP",
+            "pair_index": 456,
+            "label_same": true,
+            "score": 0.8583874702453613,
+            "threshold": 0.677209198474884,
+            "pred_same": true,
+            "img1": "data/(Preprocessed) breed_organized_with_images/yorkshire_terrier/val/yorkshire_terrier_171.jpg",
+            "img2": "data/(Preprocessed) breed_organized_with_images/yorkshire_terrier/val/yorkshire_terrier_176.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/validation_tuned/normal/proposed/tp_0456_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/validation_tuned/normal/proposed/tp_0456_img2.png",
+            "bbox1": {
+              "x1": 27,
+              "y1": 22,
+              "x2": 195,
+              "y2": 200
+            },
+            "bbox2": {
+              "x1": 3,
+              "y1": 26,
+              "x2": 202,
+              "y2": 201
+            },
+            "regions_img1": {
+              "background": 22.66330145205882,
+              "ears_region": 9.393840109342053,
+              "eyes_region": 13.006094347588217,
+              "muzzle_region": 15.240628790938585,
+              "fur_body_region": 39.696135300072335
+            },
+            "regions_img2": {
+              "background": 13.640490606061277,
+              "ears_region": 6.994929062670298,
+              "eyes_region": 15.617853278189259,
+              "muzzle_region": 25.335694345977387,
+              "fur_body_region": 38.41103270710178
+            }
+          },
+          {
+            "kind": "TN",
+            "kind_expected": "TN",
+            "pair_index": 445,
+            "label_same": false,
+            "score": 0.3540761470794678,
+            "threshold": 0.677209198474884,
+            "pred_same": false,
+            "img1": "data/(Preprocessed) breed_organized_with_images/Egyptian_Mau/val/Egyptian_Mau_189.jpg",
+            "img2": "data/(Preprocessed) breed_organized_with_images/Sphynx/val/Sphynx_192.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/validation_tuned/normal/proposed/tn_0445_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/validation_tuned/normal/proposed/tn_0445_img2.png",
+            "bbox1": {
+              "x1": 14,
+              "y1": 2,
+              "x2": 218,
+              "y2": 215
+            },
+            "bbox2": null,
+            "regions_img1": {
+              "background": 7.819624254876934,
+              "ears_region": 22.266345268644574,
+              "eyes_region": 21.56476362865483,
+              "muzzle_region": 16.57856832598773,
+              "fur_body_region": 31.770698521835946
+            },
+            "regions_img2": {
+              "background": 0.0,
+              "ears_region": 19.901015271409097,
+              "eyes_region": 26.999876259305278,
+              "muzzle_region": 28.87111805374601,
+              "fur_body_region": 24.22799041553961
+            }
+          },
+          {
+            "kind": "FP",
+            "kind_expected": "FP",
+            "pair_index": 250,
+            "label_same": false,
+            "score": 0.7077749967575073,
+            "threshold": 0.677209198474884,
+            "pred_same": true,
+            "img1": "data/(Preprocessed) breed_organized_with_images/boxer/val/boxer_18.jpg",
+            "img2": "data/(Preprocessed) breed_organized_with_images/staffordshire_bull_terrier/val/staffordshire_bull_terrier_31.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/validation_tuned/normal/proposed/fp_0250_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/validation_tuned/normal/proposed/fp_0250_img2.png",
+            "bbox1": {
+              "x1": 35,
+              "y1": 27,
+              "x2": 196,
+              "y2": 196
+            },
+            "bbox2": {
+              "x1": 31,
+              "y1": 22,
+              "x2": 204,
+              "y2": 223
+            },
+            "regions_img1": {
+              "background": 21.871101950808146,
+              "ears_region": 19.26949267899343,
+              "eyes_region": 24.638038241452758,
+              "muzzle_region": 19.09451395430228,
+              "fur_body_region": 15.126853174443374
+            },
+            "regions_img2": {
+              "background": 8.577129344581527,
+              "ears_region": 10.156020367970546,
+              "eyes_region": 25.61306497426326,
+              "muzzle_region": 31.636531341650354,
+              "fur_body_region": 24.017253971534334
+            }
+          },
+          {
+            "kind": "FN",
+            "kind_expected": "FN",
+            "pair_index": 678,
+            "label_same": true,
+            "score": 0.34952282905578613,
+            "threshold": 0.677209198474884,
+            "pred_same": false,
+            "img1": "data/(Preprocessed) breed_organized_with_images/havanese/val/havanese_145.jpg",
+            "img2": "data/(Preprocessed) breed_organized_with_images/havanese/val/havanese_190.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/validation_tuned/normal/proposed/fn_0678_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/validation_tuned/normal/proposed/fn_0678_img2.png",
+            "bbox1": null,
+            "bbox2": {
+              "x1": 8,
+              "y1": 15,
+              "x2": 220,
+              "y2": 223
+            },
+            "regions_img1": {
+              "background": 0.0,
+              "ears_region": 18.10192357196936,
+              "eyes_region": 35.87527495786972,
+              "muzzle_region": 25.9613617364662,
+              "fur_body_region": 20.06143973369473
+            },
+            "regions_img2": {
+              "background": 3.3583878205827014,
+              "ears_region": 12.542541162909158,
+              "eyes_region": 23.910045922858483,
+              "muzzle_region": 26.7561594079918,
+              "fur_body_region": 33.43286568565784
+            }
+          }
+        ]
+      }
+    },
+    "lowlight": {
+      "thresholds": {
+        "baseline": {
+          "best_threshold": 0.4282938539981842,
+          "metrics_at_best": {
+            "accuracy": 0.824,
+            "precision": 0.7909090909090909,
+            "recall": 0.8770161290322581,
+            "f1": 0.8317399617590823
+          },
+          "confusion": {
+            "TP": 435,
+            "TN": 389,
+            "FP": 115,
+            "FN": 61
+          }
+        },
+        "proposed": {
+          "best_threshold": 0.6881300806999207,
+          "metrics_at_best": {
+            "accuracy": 0.787,
+            "precision": 0.7053701015965167,
+            "recall": 0.9798387096774194,
+            "f1": 0.820253164556962
+          },
+          "confusion": {
+            "TP": 486,
+            "TN": 301,
+            "FP": 203,
+            "FN": 10
+          }
+        }
+      },
+      "region_attribution_avg_percent": {
+        "baseline": {
+          "ears_region": 18.402752063584934,
+          "eyes_region": 26.068152343042136,
+          "muzzle_region": 21.918779081393446,
+          "fur_body_region": 24.612330304694915,
+          "background": 8.997986207284576
+        },
+        "proposed": {
+          "ears_region": 16.757940284175454,
+          "eyes_region": 24.131604926838506,
+          "muzzle_region": 21.21031370542985,
+          "fur_body_region": 29.301756662673704,
+          "background": 8.598384420882486
+        }
+      },
+      "examples": {
+        "baseline": [
+          {
+            "kind": "TP",
+            "kind_expected": "TP",
+            "pair_index": 906,
+            "label_same": true,
+            "score": 0.9658343195915222,
+            "threshold": 0.4282938539981842,
+            "pred_same": true,
+            "img1": "data/(Preprocessed) breed_organized_with_images/British_Shorthair/val/British_Shorthair_18.jpg",
+            "img2": "data/(Preprocessed) breed_organized_with_images/British_Shorthair/val/British_Shorthair_207.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/validation_tuned/lowlight/baseline/tp_0906_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/validation_tuned/lowlight/baseline/tp_0906_img2.png",
+            "bbox1": {
+              "x1": 0,
+              "y1": 1,
+              "x2": 216,
+              "y2": 221
+            },
+            "bbox2": {
+              "x1": 27,
+              "y1": 28,
+              "x2": 140,
+              "y2": 221
+            },
+            "regions_img1": {
+              "background": 1.73064043150351,
+              "ears_region": 11.384207008570888,
+              "eyes_region": 16.39800073989316,
+              "muzzle_region": 24.622197890601555,
+              "fur_body_region": 45.86495392943088
+            },
+            "regions_img2": {
+              "background": 27.330400881110254,
+              "ears_region": 13.82291883235709,
+              "eyes_region": 18.458276989585784,
+              "muzzle_region": 17.465045112226434,
+              "fur_body_region": 22.923358184720435
+            }
+          },
+          {
+            "kind": "TN",
+            "kind_expected": "TN",
+            "pair_index": 84,
+            "label_same": false,
+            "score": 0.27751925587654114,
+            "threshold": 0.4282938539981842,
+            "pred_same": false,
+            "img1": "data/(Preprocessed) breed_organized_with_images/British_Shorthair/val/British_Shorthair_25.jpg",
+            "img2": "data/(Preprocessed) breed_organized_with_images/staffordshire_bull_terrier/val/staffordshire_bull_terrier_19.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/validation_tuned/lowlight/baseline/tn_0084_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/validation_tuned/lowlight/baseline/tn_0084_img2.png",
+            "bbox1": {
+              "x1": 65,
+              "y1": 5,
+              "x2": 207,
+              "y2": 223
+            },
+            "bbox2": null,
+            "regions_img1": {
+              "background": 12.40035331603974,
+              "ears_region": 13.829140789074744,
+              "eyes_region": 29.72560766813387,
+              "muzzle_region": 26.244456573247017,
+              "fur_body_region": 17.800441653504638
+            },
+            "regions_img2": {
+              "background": 0.0,
+              "ears_region": 16.81782620230177,
+              "eyes_region": 31.781540036090817,
+              "muzzle_region": 24.08638258397703,
+              "fur_body_region": 27.314251177630375
+            }
+          },
+          {
+            "kind": "FP",
+            "kind_expected": "FP",
+            "pair_index": 250,
+            "label_same": false,
+            "score": 0.9154109358787537,
+            "threshold": 0.4282938539981842,
+            "pred_same": true,
+            "img1": "data/(Preprocessed) breed_organized_with_images/boxer/val/boxer_18.jpg",
+            "img2": "data/(Preprocessed) breed_organized_with_images/staffordshire_bull_terrier/val/staffordshire_bull_terrier_31.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/validation_tuned/lowlight/baseline/fp_0250_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/validation_tuned/lowlight/baseline/fp_0250_img2.png",
+            "bbox1": {
+              "x1": 22,
+              "y1": 27,
+              "x2": 209,
+              "y2": 216
+            },
+            "bbox2": null,
+            "regions_img1": {
+              "background": 16.28380056316783,
+              "ears_region": 24.848180869728967,
+              "eyes_region": 27.61409613097862,
+              "muzzle_region": 17.51032596444496,
+              "fur_body_region": 13.743596471679634
+            },
+            "regions_img2": {
+              "background": 0.0,
+              "ears_region": 6.814009134096041,
+              "eyes_region": 25.43892680227519,
+              "muzzle_region": 31.848772394669545,
+              "fur_body_region": 35.89829166895922
+            }
+          },
+          {
+            "kind": "TP",
+            "kind_expected": "FN",
+            "pair_index": 847,
+            "label_same": true,
+            "score": 0.4411769509315491,
+            "threshold": 0.4282938539981842,
+            "pred_same": true,
+            "img1": "data/(Preprocessed) breed_organized_with_images/basset_hound/val/basset_hound_68.jpg",
+            "img2": "data/(Preprocessed) breed_organized_with_images/basset_hound/val/basset_hound_145.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/validation_tuned/lowlight/baseline/fn_0847_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/validation_tuned/lowlight/baseline/fn_0847_img2.png",
+            "bbox1": {
+              "x1": 24,
+              "y1": 26,
+              "x2": 201,
+              "y2": 183
+            },
+            "bbox2": {
+              "x1": 85,
+              "y1": 65,
+              "x2": 209,
+              "y2": 214
+            },
+            "regions_img1": {
+              "background": 17.054962917127053,
+              "ears_region": 9.63244748048242,
+              "eyes_region": 20.276313135522113,
+              "muzzle_region": 19.99375880030646,
+              "fur_body_region": 33.04251766656195
+            },
+            "regions_img2": {
+              "background": 66.21955966859478,
+              "ears_region": 8.20412835184057,
+              "eyes_region": 6.752202182878583,
+              "muzzle_region": 7.999069226571252,
+              "fur_body_region": 10.825040570114828
+            }
+          }
+        ],
+        "proposed": [
+          {
+            "kind": "TP",
+            "kind_expected": "TP",
+            "pair_index": 215,
+            "label_same": true,
+            "score": 0.7958023548126221,
+            "threshold": 0.6881300806999207,
+            "pred_same": true,
+            "img1": "data/(Preprocessed) breed_organized_with_images/Sphynx/val/Sphynx_1.jpg",
+            "img2": "data/(Preprocessed) breed_organized_with_images/Sphynx/val/Sphynx_204.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/validation_tuned/lowlight/proposed/tp_0215_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/validation_tuned/lowlight/proposed/tp_0215_img2.png",
+            "bbox1": null,
+            "bbox2": {
+              "x1": 79,
+              "y1": 27,
+              "x2": 199,
+              "y2": 109
+            },
+            "regions_img1": {
+              "background": 0.0,
+              "ears_region": 14.193090544638975,
+              "eyes_region": 29.633568405508758,
+              "muzzle_region": 23.62066408041109,
+              "fur_body_region": 32.55267696944118
+            },
+            "regions_img2": {
+              "background": 69.61186633420363,
+              "ears_region": 4.406944781661356,
+              "eyes_region": 6.254494123325418,
+              "muzzle_region": 6.495382655663943,
+              "fur_body_region": 13.231312105145651
+            }
+          },
+          {
+            "kind": "TN",
+            "kind_expected": "TN",
+            "pair_index": 505,
+            "label_same": false,
+            "score": 0.3572927713394165,
+            "threshold": 0.6881300806999207,
+            "pred_same": false,
+            "img1": "data/(Preprocessed) breed_organized_with_images/Sphynx/val/Sphynx_139.jpg",
+            "img2": "data/(Preprocessed) breed_organized_with_images/havanese/val/havanese_31.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/validation_tuned/lowlight/proposed/tn_0505_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/validation_tuned/lowlight/proposed/tn_0505_img2.png",
+            "bbox1": null,
+            "bbox2": {
+              "x1": 30,
+              "y1": 0,
+              "x2": 220,
+              "y2": 219
+            },
+            "regions_img1": {
+              "background": 0.0,
+              "ears_region": 22.893868551664504,
+              "eyes_region": 25.902104212802644,
+              "muzzle_region": 21.634403144344347,
+              "fur_body_region": 29.569624091188494
+            },
+            "regions_img2": {
+              "background": 8.67261412626638,
+              "ears_region": 10.978407195418736,
+              "eyes_region": 20.284693783147763,
+              "muzzle_region": 23.953216837087318,
+              "fur_body_region": 36.111068058079816
+            }
+          },
+          {
+            "kind": "TN",
+            "kind_expected": "FP",
+            "pair_index": 537,
+            "label_same": false,
+            "score": 0.6819562911987305,
+            "threshold": 0.6881300806999207,
+            "pred_same": false,
+            "img1": "data/(Preprocessed) breed_organized_with_images/Russian_Blue/val/Russian_Blue_212.jpg",
+            "img2": "data/(Preprocessed) breed_organized_with_images/British_Shorthair/val/British_Shorthair_275.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/validation_tuned/lowlight/proposed/fp_0537_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/validation_tuned/lowlight/proposed/fp_0537_img2.png",
+            "bbox1": {
+              "x1": 27,
+              "y1": 12,
+              "x2": 201,
+              "y2": 223
+            },
+            "bbox2": {
+              "x1": 3,
+              "y1": 6,
+              "x2": 203,
+              "y2": 221
+            },
+            "regions_img1": {
+              "background": 11.777956899979493,
+              "ears_region": 7.826583999549424,
+              "eyes_region": 18.469700986783053,
+              "muzzle_region": 26.607727303978702,
+              "fur_body_region": 35.31803080970932
+            },
+            "regions_img2": {
+              "background": 3.216237517563287,
+              "ears_region": 12.094348835488148,
+              "eyes_region": 27.855439209179636,
+              "muzzle_region": 26.0949680677632,
+              "fur_body_region": 30.739006370005722
+            }
+          },
+          {
+            "kind": "FN",
+            "kind_expected": "FN",
+            "pair_index": 678,
+            "label_same": true,
+            "score": 0.38028642535209656,
+            "threshold": 0.6881300806999207,
+            "pred_same": false,
+            "img1": "data/(Preprocessed) breed_organized_with_images/havanese/val/havanese_145.jpg",
+            "img2": "data/(Preprocessed) breed_organized_with_images/havanese/val/havanese_190.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/validation_tuned/lowlight/proposed/fn_0678_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/validation_tuned/lowlight/proposed/fn_0678_img2.png",
+            "bbox1": {
+              "x1": 4,
+              "y1": 11,
+              "x2": 222,
+              "y2": 213
+            },
+            "bbox2": {
+              "x1": 2,
+              "y1": 19,
+              "x2": 214,
+              "y2": 224
+            },
+            "regions_img1": {
+              "background": 4.341959564339841,
+              "ears_region": 13.373498618154505,
+              "eyes_region": 26.500646561350006,
+              "muzzle_region": 28.419126630751503,
+              "fur_body_region": 27.36476862540414
+            },
+            "regions_img2": {
+              "background": 3.8516183447646446,
+              "ears_region": 12.923265778297646,
+              "eyes_region": 19.665401634592804,
+              "muzzle_region": 26.495664390468587,
+              "fur_body_region": 37.06404985187633
+            }
+          }
+        ]
+      }
+    }
+  },
+  "lowlight_config": {
+    "brightness": 0.35,
+    "gamma": 1.8,
+    "noise_std": 0.02
+  },
+  "performance_factors": [
+    "Image quality (blur, motion, resolution)",
+    "Lighting and exposure (including lowlight)",
+    "Pose/angle and occlusion (face partially visible)",
+    "Background leakage (model attention outside the pet)",
+    "Threshold selection for same/different decision",
+    "Dataset imbalance per breed/label and domain shift vs real uploads"
+  ],
+  "gaps_in_parameters_context": [
+    "No supervised annotations for explicit parts (ears/eyes/nose). The models learn implicit features; we approximate them using saliency + region aggregation.",
+    "Label proxy (breed/name) may differ from real same-pet identity matching; this analysis uses available dataset structure.",
+    "BBox is from generic COCO detector; part regions are coarse bands (not true keypoint detection)."
+  ],
+  "architectural_challenges": [
+    "Siamese similarity relies on thresholding; optimal threshold can drift by scenario (e.g., lowlight).",
+    "Capsule/attention models can be harder to interpret than plain CNNs; saliency helps but remains approximate.",
+    "Ensembling (custom + MobileNetV2) improves robustness but adds sensitivity to preprocessing differences between branches."
+  ]
+}

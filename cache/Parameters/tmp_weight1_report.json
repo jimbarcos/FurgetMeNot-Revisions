@@ -1,0 +1,193 @@
+{
+  "generated_at": "2025-12-30T16:05:18Z",
+  "models": {
+    "baseline": {
+      "path": "model/Baseline/best_model.h5",
+      "type": "Siamese CNN (MobileNetV2)",
+      "param_count": 3064704,
+      "input": [
+        224,
+        224,
+        3
+      ]
+    },
+    "proposed": {
+      "path": "model/final_best_model.keras",
+      "type": "Siamese Capsule Network + Attention + MobileNetV2 Ensemble",
+      "param_count": 2257984,
+      "input": [
+        224,
+        224,
+        3
+      ],
+      "mnetv2_weight": 1.0,
+      "use_mnetv2": true
+    }
+  },
+  "dataset": {
+    "csv": "data/processed_data/val_pairs.csv",
+    "data_root": "data",
+    "label_strategy": "CSV label column (0/1) where 1 means similar.",
+    "pair_count": 1000
+  },
+  "parameters_definition": [
+    {
+      "name": "Ears Region",
+      "key": "ears_region",
+      "definition": "Top 20% of detected pet bounding box (proxy for ears/head top)."
+    },
+    {
+      "name": "Eyes Region",
+      "key": "eyes_region",
+      "definition": "Next 20% band inside the pet bbox (proxy for eyes/upper face)."
+    },
+    {
+      "name": "Muzzle/Snout Region",
+      "key": "muzzle_region",
+      "definition": "Middle 20% band inside the pet bbox (proxy for nose/snout)."
+    },
+    {
+      "name": "Fur/Body Region",
+      "key": "fur_body_region",
+      "definition": "Lower 40% inside the pet bbox (proxy for coat texture/pattern/body shape)."
+    },
+    {
+      "name": "Background",
+      "key": "background",
+      "definition": "Pixels outside detected pet bbox (proxy for background reliance / spurious cues)."
+    }
+  ],
+  "scenarios": {
+    "normal": {
+      "thresholds": {
+        "baseline": {
+          "best_threshold": 0.6177805066108704,
+          "metrics_at_best": {
+            "accuracy": 0.932,
+            "precision": 0.9083969465648855,
+            "recall": 0.9596774193548387,
+            "f1": 0.9333333333333332
+          },
+          "confusion": {
+            "TP": 476,
+            "TN": 456,
+            "FP": 48,
+            "FN": 20
+          }
+        },
+        "proposed": {
+          "best_threshold": 0.7031210064888,
+          "metrics_at_best": {
+            "accuracy": 0.925,
+            "precision": 0.9040307101727447,
+            "recall": 0.9495967741935484,
+            "f1": 0.9262536873156342
+          },
+          "confusion": {
+            "TP": 471,
+            "TN": 454,
+            "FP": 50,
+            "FN": 25
+          }
+        }
+      },
+      "region_attribution_avg_percent": {
+        "baseline": {
+          "ears_region": 0.0,
+          "eyes_region": 0.0,
+          "muzzle_region": 0.0,
+          "fur_body_region": 0.0,
+          "background": 0.0
+        },
+        "proposed": {
+          "ears_region": 0.0,
+          "eyes_region": 0.0,
+          "muzzle_region": 0.0,
+          "fur_body_region": 0.0,
+          "background": 0.0
+        }
+      },
+      "examples": {
+        "baseline": [],
+        "proposed": []
+      }
+    },
+    "lowlight": {
+      "thresholds": {
+        "baseline": {
+          "best_threshold": 0.4282938539981842,
+          "metrics_at_best": {
+            "accuracy": 0.824,
+            "precision": 0.7909090909090909,
+            "recall": 0.8770161290322581,
+            "f1": 0.8317399617590823
+          },
+          "confusion": {
+            "TP": 435,
+            "TN": 389,
+            "FP": 115,
+            "FN": 61
+          }
+        },
+        "proposed": {
+          "best_threshold": 0.7197158336639404,
+          "metrics_at_best": {
+            "accuracy": 0.836,
+            "precision": 0.7974910394265233,
+            "recall": 0.8971774193548387,
+            "f1": 0.8444022770398482
+          },
+          "confusion": {
+            "TP": 445,
+            "TN": 391,
+            "FP": 113,
+            "FN": 51
+          }
+        }
+      },
+      "region_attribution_avg_percent": {
+        "baseline": {
+          "ears_region": 0.0,
+          "eyes_region": 0.0,
+          "muzzle_region": 0.0,
+          "fur_body_region": 0.0,
+          "background": 0.0
+        },
+        "proposed": {
+          "ears_region": 0.0,
+          "eyes_region": 0.0,
+          "muzzle_region": 0.0,
+          "fur_body_region": 0.0,
+          "background": 0.0
+        }
+      },
+      "examples": {
+        "baseline": [],
+        "proposed": []
+      }
+    }
+  },
+  "lowlight_config": {
+    "brightness": 0.35,
+    "gamma": 1.8,
+    "noise_std": 0.02
+  },
+  "performance_factors": [
+    "Image quality (blur, motion, resolution)",
+    "Lighting and exposure (including lowlight)",
+    "Pose/angle and occlusion (face partially visible)",
+    "Background leakage (model attention outside the pet)",
+    "Threshold selection for same/different decision",
+    "Dataset imbalance per breed/label and domain shift vs real uploads"
+  ],
+  "gaps_in_parameters_context": [
+    "No supervised annotations for explicit parts (ears/eyes/nose). The models learn implicit features; we approximate them using saliency + region aggregation.",
+    "Label proxy (breed/name) may differ from real same-pet identity matching; this analysis uses available dataset structure.",
+    "BBox is from generic COCO detector; part regions are coarse bands (not true keypoint detection)."
+  ],
+  "architectural_challenges": [
+    "Siamese similarity relies on thresholding; optimal threshold can drift by scenario (e.g., lowlight).",
+    "Capsule/attention models can be harder to interpret than plain CNNs; saliency helps but remains approximate.",
+    "Ensembling (custom + MobileNetV2) improves robustness but adds sensitivity to preprocessing differences between branches."
+  ]
+}

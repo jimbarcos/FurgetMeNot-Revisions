@@ -1,0 +1,765 @@
+{
+  "generated_at": "2025-12-30T14:13:16Z",
+  "models": {
+    "baseline": {
+      "path": "model/Baseline/best_model.h5",
+      "type": "Siamese CNN (MobileNetV2)",
+      "param_count": 3064704,
+      "input": [
+        224,
+        224,
+        3
+      ]
+    },
+    "proposed": {
+      "path": "model/final_best_model.keras",
+      "type": "Siamese Capsule Network + Attention + MobileNetV2 Ensemble",
+      "param_count": 2257984,
+      "input": [
+        224,
+        224,
+        3
+      ],
+      "mnetv2_weight": 0.4,
+      "use_mnetv2": true
+    }
+  },
+  "dataset": {
+    "root": "Preprocessed",
+    "label_strategy": "Filename-derived label (prefix before first underscore). Similar=Same label; Dissimilar=Different label.",
+    "pair_count": 200
+  },
+  "parameters_definition": [
+    {
+      "name": "Ears Region",
+      "key": "ears_region",
+      "definition": "Top 20% of detected pet bounding box (proxy for ears/head top)."
+    },
+    {
+      "name": "Eyes Region",
+      "key": "eyes_region",
+      "definition": "Next 20% band inside the pet bbox (proxy for eyes/upper face)."
+    },
+    {
+      "name": "Muzzle/Snout Region",
+      "key": "muzzle_region",
+      "definition": "Middle 20% band inside the pet bbox (proxy for nose/snout)."
+    },
+    {
+      "name": "Fur/Body Region",
+      "key": "fur_body_region",
+      "definition": "Lower 40% inside the pet bbox (proxy for coat texture/pattern/body shape)."
+    },
+    {
+      "name": "Background",
+      "key": "background",
+      "definition": "Pixels outside detected pet bbox (proxy for background reliance / spurious cues)."
+    }
+  ],
+  "scenarios": {
+    "normal": {
+      "thresholds": {
+        "baseline": {
+          "best_threshold": 0.5852168798446655,
+          "metrics_at_best": {
+            "accuracy": 0.885,
+            "precision": 0.8532110091743119,
+            "recall": 0.93,
+            "f1": 0.8899521531100477
+          },
+          "confusion": {
+            "TP": 93,
+            "TN": 84,
+            "FP": 16,
+            "FN": 7
+          }
+        },
+        "proposed": {
+          "best_threshold": 0.7217282056808472,
+          "metrics_at_best": {
+            "accuracy": 0.905,
+            "precision": 0.8785046728971962,
+            "recall": 0.94,
+            "f1": 0.9082125603864735
+          },
+          "confusion": {
+            "TP": 94,
+            "TN": 87,
+            "FP": 13,
+            "FN": 6
+          }
+        }
+      },
+      "region_attribution_avg_percent": {
+        "baseline": {
+          "ears_region": 16.825860096092274,
+          "eyes_region": 23.648153620962713,
+          "muzzle_region": 23.277117603883934,
+          "fur_body_region": 31.144035044375688,
+          "background": 5.104833634685391
+        },
+        "proposed": {
+          "ears_region": 15.608782724433041,
+          "eyes_region": 21.866532526862677,
+          "muzzle_region": 23.01784392681624,
+          "fur_body_region": 34.01181076195903,
+          "background": 5.495030059929021
+        }
+      },
+      "examples": {
+        "baseline": [
+          {
+            "kind": "TP",
+            "kind_expected": "TP",
+            "pair_index": 82,
+            "label_same": true,
+            "score": 0.9919487833976746,
+            "threshold": 0.5852168798446655,
+            "pred_same": true,
+            "img1": "Preprocessed/Cats/Bombay_Bombay_163_05f350149b.jpg",
+            "img2": "Preprocessed/Cats/Bombay_Bombay_30_c6711ebcef.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/normal/baseline/tp_0082_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/normal/baseline/tp_0082_img2.png",
+            "bbox1": {
+              "x1": 1,
+              "y1": 3,
+              "x2": 172,
+              "y2": 223
+            },
+            "bbox2": {
+              "x1": 28,
+              "y1": 5,
+              "x2": 223,
+              "y2": 224
+            },
+            "regions_img1": {
+              "background": 14.42807534540259,
+              "ears_region": 16.73435151154597,
+              "eyes_region": 24.216482642868336,
+              "muzzle_region": 23.10172831751878,
+              "fur_body_region": 21.51936218266431
+            },
+            "regions_img2": {
+              "background": 8.254197519564357,
+              "ears_region": 13.275328630294542,
+              "eyes_region": 21.59446968775319,
+              "muzzle_region": 27.15582104714474,
+              "fur_body_region": 29.720183115243163
+            }
+          },
+          {
+            "kind": "TN",
+            "kind_expected": "TN",
+            "pair_index": 99,
+            "label_same": false,
+            "score": 0.572871744632721,
+            "threshold": 0.5852168798446655,
+            "pred_same": false,
+            "img1": "Preprocessed/Dogs/tisoy1_108f7a56-892b-47cb-ad12-302f4860d35d.jpg",
+            "img2": "Preprocessed/Dogs/english_setter_english_setter_44_c344aa31b5.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/normal/baseline/tn_0099_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/normal/baseline/tn_0099_img2.png",
+            "bbox1": {
+              "x1": 3,
+              "y1": 0,
+              "x2": 210,
+              "y2": 224
+            },
+            "bbox2": {
+              "x1": 2,
+              "y1": 1,
+              "x2": 222,
+              "y2": 172
+            },
+            "regions_img1": {
+              "background": 10.422537977917596,
+              "ears_region": 17.456743658668298,
+              "eyes_region": 25.70439513581144,
+              "muzzle_region": 22.89846838342712,
+              "fur_body_region": 23.517854844175567
+            },
+            "regions_img2": {
+              "background": 27.025506247262925,
+              "ears_region": 11.78287560748047,
+              "eyes_region": 16.597057824041507,
+              "muzzle_region": 15.220355954863091,
+              "fur_body_region": 29.374204366351996
+            }
+          },
+          {
+            "kind": "FP",
+            "kind_expected": "FP",
+            "pair_index": 68,
+            "label_same": false,
+            "score": 0.9323210716247559,
+            "threshold": 0.5852168798446655,
+            "pred_same": true,
+            "img1": "Preprocessed/Dogs/keith2_fd08808b-6817-4b09-a33b-842348f2d125.jpg",
+            "img2": "Preprocessed/Dogs/pug_pug_101_34eeaa86b2.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/normal/baseline/fp_0068_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/normal/baseline/fp_0068_img2.png",
+            "bbox1": {
+              "x1": 1,
+              "y1": 3,
+              "x2": 220,
+              "y2": 221
+            },
+            "bbox2": {
+              "x1": 2,
+              "y1": 0,
+              "x2": 223,
+              "y2": 219
+            },
+            "regions_img1": {
+              "background": 1.62672393344825,
+              "ears_region": 28.822796146391035,
+              "eyes_region": 31.596709137758808,
+              "muzzle_region": 20.77887362907149,
+              "fur_body_region": 17.174897153330434
+            },
+            "regions_img2": {
+              "background": 1.4930031236362218,
+              "ears_region": 16.963971640131412,
+              "eyes_region": 29.698838254613314,
+              "muzzle_region": 24.074089062120454,
+              "fur_body_region": 27.770097919498603
+            }
+          },
+          {
+            "kind": "FN",
+            "kind_expected": "FN",
+            "pair_index": 1,
+            "label_same": true,
+            "score": 0.5421157479286194,
+            "threshold": 0.5852168798446655,
+            "pred_same": false,
+            "img1": "Preprocessed/Cats/Persian_Persian_228_dd929ab518.jpg",
+            "img2": "Preprocessed/Cats/Persian_Persian_32_fd005d3fb2.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/normal/baseline/fn_0001_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/normal/baseline/fn_0001_img2.png",
+            "bbox1": null,
+            "bbox2": null,
+            "regions_img1": {
+              "background": 0.0,
+              "ears_region": 25.13078921337026,
+              "eyes_region": 31.26505513849795,
+              "muzzle_region": 21.093300760964052,
+              "fur_body_region": 22.51085488716774
+            },
+            "regions_img2": {
+              "background": 0.0,
+              "ears_region": 21.220081882016945,
+              "eyes_region": 33.12100411175925,
+              "muzzle_region": 22.809434335607964,
+              "fur_body_region": 22.84947967061584
+            }
+          }
+        ],
+        "proposed": [
+          {
+            "kind": "TP",
+            "kind_expected": "TP",
+            "pair_index": 154,
+            "label_same": true,
+            "score": 0.9023371934890747,
+            "threshold": 0.7217282056808472,
+            "pred_same": true,
+            "img1": "Preprocessed/Cats/Birman_Birman_131_c6a7e1390d.jpg",
+            "img2": "Preprocessed/Cats/Birman_Birman_183_130916fba8.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/normal/proposed/tp_0154_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/normal/proposed/tp_0154_img2.png",
+            "bbox1": {
+              "x1": 12,
+              "y1": 5,
+              "x2": 191,
+              "y2": 222
+            },
+            "bbox2": {
+              "x1": 2,
+              "y1": 0,
+              "x2": 214,
+              "y2": 224
+            },
+            "regions_img1": {
+              "background": 10.060670623265418,
+              "ears_region": 9.671960372153443,
+              "eyes_region": 20.41482903710471,
+              "muzzle_region": 28.307477448219828,
+              "fur_body_region": 31.545062519256593
+            },
+            "regions_img2": {
+              "background": 4.86496992247315,
+              "ears_region": 16.049022303050155,
+              "eyes_region": 19.884787577969917,
+              "muzzle_region": 21.553631364608517,
+              "fur_body_region": 37.64758883189827
+            }
+          },
+          {
+            "kind": "TN",
+            "kind_expected": "TN",
+            "pair_index": 142,
+            "label_same": false,
+            "score": 0.7200263142585754,
+            "threshold": 0.7217282056808472,
+            "pred_same": false,
+            "img1": "Preprocessed/Dogs/keeshond_keeshond_114_6b1c116f62.jpg",
+            "img2": "Preprocessed/Dogs/Kisses_241087a4-da2b-4ec8-a17e-a8f8d5d636bd.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/normal/proposed/tn_0142_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/normal/proposed/tn_0142_img2.png",
+            "bbox1": {
+              "x1": 2,
+              "y1": 1,
+              "x2": 222,
+              "y2": 223
+            },
+            "bbox2": null,
+            "regions_img1": {
+              "background": 0.8875113190525047,
+              "ears_region": 15.121739985348299,
+              "eyes_region": 26.238084103388086,
+              "muzzle_region": 29.10999618238668,
+              "fur_body_region": 28.64266840982443
+            },
+            "regions_img2": {
+              "background": 0.0,
+              "ears_region": 22.25790798352407,
+              "eyes_region": 33.064420151863395,
+              "muzzle_region": 20.818054270815374,
+              "fur_body_region": 23.85961759379714
+            }
+          },
+          {
+            "kind": "FP",
+            "kind_expected": "FP",
+            "pair_index": 24,
+            "label_same": false,
+            "score": 0.8764067888259888,
+            "threshold": 0.7217282056808472,
+            "pred_same": true,
+            "img1": "Preprocessed/Dogs/Kisses_241087a4-da2b-4ec8-a17e-a8f8d5d636bd.jpg",
+            "img2": "Preprocessed/Dogs/Kisses2_4f6ed200-4035-4bbf-85aa-625bffce5346.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/normal/proposed/fp_0024_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/normal/proposed/fp_0024_img2.png",
+            "bbox1": null,
+            "bbox2": null,
+            "regions_img1": {
+              "background": 0.0,
+              "ears_region": 22.84332285712181,
+              "eyes_region": 30.118212631395817,
+              "muzzle_region": 18.88422709619582,
+              "fur_body_region": 28.154237415286563
+            },
+            "regions_img2": {
+              "background": 0.0,
+              "ears_region": 21.655361399049887,
+              "eyes_region": 27.50097276034041,
+              "muzzle_region": 25.40363069610493,
+              "fur_body_region": 25.44003514450478
+            }
+          },
+          {
+            "kind": "FN",
+            "kind_expected": "FN",
+            "pair_index": 27,
+            "label_same": true,
+            "score": 0.7165635228157043,
+            "threshold": 0.7217282056808472,
+            "pred_same": false,
+            "img1": "Preprocessed/Dogs/saint_bernard_saint_bernard_120_bd4bf31d4e.jpg",
+            "img2": "Preprocessed/Dogs/saint_bernard_saint_bernard_71_208a83966c.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/normal/proposed/fn_0027_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/normal/proposed/fn_0027_img2.png",
+            "bbox1": null,
+            "bbox2": {
+              "x1": 2,
+              "y1": 4,
+              "x2": 196,
+              "y2": 222
+            },
+            "regions_img1": {
+              "background": 0.0,
+              "ears_region": 29.34979948229708,
+              "eyes_region": 25.25688613140706,
+              "muzzle_region": 25.120710258045236,
+              "fur_body_region": 20.27260412825063
+            },
+            "regions_img2": {
+              "background": 3.745301409316711,
+              "ears_region": 17.402118499970655,
+              "eyes_region": 28.459906087623807,
+              "muzzle_region": 27.00194973198282,
+              "fur_body_region": 23.390724271106006
+            }
+          }
+        ]
+      }
+    },
+    "lowlight": {
+      "thresholds": {
+        "baseline": {
+          "best_threshold": 0.4411028325557709,
+          "metrics_at_best": {
+            "accuracy": 0.785,
+            "precision": 0.7567567567567568,
+            "recall": 0.84,
+            "f1": 0.7962085308056872
+          },
+          "confusion": {
+            "TP": 84,
+            "TN": 73,
+            "FP": 27,
+            "FN": 16
+          }
+        },
+        "proposed": {
+          "best_threshold": 0.6920374035835266,
+          "metrics_at_best": {
+            "accuracy": 0.77,
+            "precision": 0.6901408450704225,
+            "recall": 0.98,
+            "f1": 0.8099173553719008
+          },
+          "confusion": {
+            "TP": 98,
+            "TN": 56,
+            "FP": 44,
+            "FN": 2
+          }
+        }
+      },
+      "region_attribution_avg_percent": {
+        "baseline": {
+          "ears_region": 19.10642631999042,
+          "eyes_region": 25.704509263734046,
+          "muzzle_region": 21.78487242969428,
+          "fur_body_region": 25.208068752716088,
+          "background": 8.196123233865158
+        },
+        "proposed": {
+          "ears_region": 15.107241563261852,
+          "eyes_region": 23.08248141563752,
+          "muzzle_region": 22.713256727556153,
+          "fur_body_region": 30.90701349733309,
+          "background": 8.190006796211385
+        }
+      },
+      "examples": {
+        "baseline": [
+          {
+            "kind": "TP",
+            "kind_expected": "TP",
+            "pair_index": 186,
+            "label_same": true,
+            "score": 0.9891437888145447,
+            "threshold": 0.4411028325557709,
+            "pred_same": true,
+            "img1": "Preprocessed/Cats/Birman_Birman_153_7f2dd3e3d2.jpg",
+            "img2": "Preprocessed/Cats/Birman_Birman_71_e3a1b640e1.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/lowlight/baseline/tp_0186_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/lowlight/baseline/tp_0186_img2.png",
+            "bbox1": {
+              "x1": 1,
+              "y1": 0,
+              "x2": 178,
+              "y2": 218
+            },
+            "bbox2": {
+              "x1": 68,
+              "y1": 3,
+              "x2": 200,
+              "y2": 90
+            },
+            "regions_img1": {
+              "background": 7.792327923319678,
+              "ears_region": 10.307571630232923,
+              "eyes_region": 14.544821456745966,
+              "muzzle_region": 27.85838527696312,
+              "fur_body_region": 39.49689371273833
+            },
+            "regions_img2": {
+              "background": 52.06670638095414,
+              "ears_region": 5.6882401189967355,
+              "eyes_region": 9.164699063345898,
+              "muzzle_region": 10.730181291945275,
+              "fur_body_region": 22.35017314475796
+            }
+          },
+          {
+            "kind": "TN",
+            "kind_expected": "TN",
+            "pair_index": 195,
+            "label_same": false,
+            "score": 0.43295982480049133,
+            "threshold": 0.4411028325557709,
+            "pred_same": false,
+            "img1": "Preprocessed/Dogs/samoyed_samoyed_117_8c0f1b4014.jpg",
+            "img2": "Preprocessed/Dogs/xymon3_97a0e041-0453-4e31-bfd0-5b63f5ad031d.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/lowlight/baseline/tn_0195_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/lowlight/baseline/tn_0195_img2.png",
+            "bbox1": {
+              "x1": 0,
+              "y1": 0,
+              "x2": 47,
+              "y2": 191
+            },
+            "bbox2": {
+              "x1": 1,
+              "y1": 0,
+              "x2": 212,
+              "y2": 223
+            },
+            "regions_img1": {
+              "background": 84.94988147601141,
+              "ears_region": 3.7751765238579087,
+              "eyes_region": 4.49514311935616,
+              "muzzle_region": 3.2530699993565313,
+              "fur_body_region": 3.526728881417995
+            },
+            "regions_img2": {
+              "background": 1.6687905288263103,
+              "ears_region": 20.47778492111622,
+              "eyes_region": 25.679864188655756,
+              "muzzle_region": 22.560394903522184,
+              "fur_body_region": 29.613165457879514
+            }
+          },
+          {
+            "kind": "FP",
+            "kind_expected": "FP",
+            "pair_index": 24,
+            "label_same": false,
+            "score": 0.9703004956245422,
+            "threshold": 0.4411028325557709,
+            "pred_same": true,
+            "img1": "Preprocessed/Dogs/Kisses_241087a4-da2b-4ec8-a17e-a8f8d5d636bd.jpg",
+            "img2": "Preprocessed/Dogs/Kisses2_4f6ed200-4035-4bbf-85aa-625bffce5346.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/lowlight/baseline/fp_0024_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/lowlight/baseline/fp_0024_img2.png",
+            "bbox1": {
+              "x1": 3,
+              "y1": 2,
+              "x2": 224,
+              "y2": 223
+            },
+            "bbox2": null,
+            "regions_img1": {
+              "background": 0.6028003893192698,
+              "ears_region": 17.301588436714695,
+              "eyes_region": 33.39041753662278,
+              "muzzle_region": 25.441470381814757,
+              "fur_body_region": 23.263723255528507
+            },
+            "regions_img2": {
+              "background": 0.0,
+              "ears_region": 19.694800704065056,
+              "eyes_region": 36.46307943182622,
+              "muzzle_region": 25.10609425449964,
+              "fur_body_region": 18.736025609609083
+            }
+          },
+          {
+            "kind": "FN",
+            "kind_expected": "FN",
+            "pair_index": 12,
+            "label_same": true,
+            "score": 0.37352266907691956,
+            "threshold": 0.4411028325557709,
+            "pred_same": false,
+            "img1": "Preprocessed/Cats/Egyptian_Mau_Egyptian_Mau_114_4254795088.jpg",
+            "img2": "Preprocessed/Cats/Egyptian_Mau_Egyptian_Mau_79_31a01d4820.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/lowlight/baseline/fn_0012_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/lowlight/baseline/fn_0012_img2.png",
+            "bbox1": {
+              "x1": 14,
+              "y1": 2,
+              "x2": 210,
+              "y2": 222
+            },
+            "bbox2": {
+              "x1": 0,
+              "y1": 4,
+              "x2": 79,
+              "y2": 220
+            },
+            "regions_img1": {
+              "background": 7.160498745050669,
+              "ears_region": 17.946127800460186,
+              "eyes_region": 22.51249500601102,
+              "muzzle_region": 22.09373649636671,
+              "fur_body_region": 30.28714195211142
+            },
+            "regions_img2": {
+              "background": 65.59408046090634,
+              "ears_region": 9.502019111849215,
+              "eyes_region": 9.46006878091234,
+              "muzzle_region": 7.664237820919483,
+              "fur_body_region": 7.779593825412619
+            }
+          }
+        ],
+        "proposed": [
+          {
+            "kind": "TP",
+            "kind_expected": "TP",
+            "pair_index": 36,
+            "label_same": true,
+            "score": 0.8798946142196655,
+            "threshold": 0.6920374035835266,
+            "pred_same": true,
+            "img1": "Preprocessed/Dogs/missing_eeab6505-1d70-4676-9a89-8d60e787591f.jpg",
+            "img2": "Preprocessed/Dogs/missing_08d60a76-a039-4a91-9729-095e0c885372.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/lowlight/proposed/tp_0036_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/lowlight/proposed/tp_0036_img2.png",
+            "bbox1": null,
+            "bbox2": {
+              "x1": 3,
+              "y1": 2,
+              "x2": 220,
+              "y2": 216
+            },
+            "regions_img1": {
+              "background": 0.0,
+              "ears_region": 27.373233166200023,
+              "eyes_region": 31.40721054395629,
+              "muzzle_region": 20.712570207838905,
+              "fur_body_region": 20.50698608200479
+            },
+            "regions_img2": {
+              "background": 4.44277349203557,
+              "ears_region": 12.491878947400076,
+              "eyes_region": 25.427484145792725,
+              "muzzle_region": 27.09030227092998,
+              "fur_body_region": 30.547561143841648
+            }
+          },
+          {
+            "kind": "TN",
+            "kind_expected": "TN",
+            "pair_index": 151,
+            "label_same": false,
+            "score": 0.6909252405166626,
+            "threshold": 0.6920374035835266,
+            "pred_same": false,
+            "img1": "Preprocessed/Dogs/Naix2_0294cca2-cfef-40d2-aff0-cfbfc42c4244.jpg",
+            "img2": "Preprocessed/Dogs/wheaten_terrier_wheaten_terrier_23_89ba1ef6ef.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/lowlight/proposed/tn_0151_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/lowlight/proposed/tn_0151_img2.png",
+            "bbox1": null,
+            "bbox2": null,
+            "regions_img1": {
+              "background": 0.0,
+              "ears_region": 11.685170755759398,
+              "eyes_region": 23.266632247653636,
+              "muzzle_region": 31.047016832583587,
+              "fur_body_region": 34.00118016400338
+            },
+            "regions_img2": {
+              "background": 0.0,
+              "ears_region": 24.425305392951557,
+              "eyes_region": 27.56434179756624,
+              "muzzle_region": 23.440340248495016,
+              "fur_body_region": 24.570012560987188
+            }
+          },
+          {
+            "kind": "FP",
+            "kind_expected": "FP",
+            "pair_index": 54,
+            "label_same": false,
+            "score": 0.8617013692855835,
+            "threshold": 0.6920374035835266,
+            "pred_same": true,
+            "img1": "Preprocessed/Cats/Birman_Birman_159_ab47f8e66b.jpg",
+            "img2": "Preprocessed/Cats/moon2_2cd1c756-0779-47be-993a-1af433ac553c.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/lowlight/proposed/fp_0054_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/lowlight/proposed/fp_0054_img2.png",
+            "bbox1": {
+              "x1": 3,
+              "y1": 3,
+              "x2": 222,
+              "y2": 223
+            },
+            "bbox2": {
+              "x1": 15,
+              "y1": 3,
+              "x2": 223,
+              "y2": 173
+            },
+            "regions_img1": {
+              "background": 1.336484948020076,
+              "ears_region": 17.098578769261927,
+              "eyes_region": 21.7709775795824,
+              "muzzle_region": 20.81085597513927,
+              "fur_body_region": 38.98310272799631
+            },
+            "regions_img2": {
+              "background": 20.712836533987634,
+              "ears_region": 9.595455367493296,
+              "eyes_region": 12.255728761339883,
+              "muzzle_region": 13.882456265977213,
+              "fur_body_region": 43.55352307120198
+            }
+          },
+          {
+            "kind": "FN",
+            "kind_expected": "FN",
+            "pair_index": 139,
+            "label_same": true,
+            "score": 0.6633864641189575,
+            "threshold": 0.6920374035835266,
+            "pred_same": false,
+            "img1": "Preprocessed/Cats/iya_95f83e2f-4e1b-4e1d-95d0-b0426de6578d.jpg",
+            "img2": "Preprocessed/Dogs/iya_c57fec55-4771-4d2b-87c6-8986279bde5b.jpg",
+            "heatmap1": "cache/Parameters/heatmaps/lowlight/proposed/fn_0139_img1.png",
+            "heatmap2": "cache/Parameters/heatmaps/lowlight/proposed/fn_0139_img2.png",
+            "bbox1": {
+              "x1": 1,
+              "y1": 10,
+              "x2": 223,
+              "y2": 224
+            },
+            "bbox2": {
+              "x1": 1,
+              "y1": 1,
+              "x2": 217,
+              "y2": 222
+            },
+            "regions_img1": {
+              "background": 1.920790124555006,
+              "ears_region": 12.871966575398496,
+              "eyes_region": 24.84518191781323,
+              "muzzle_region": 22.433623632033655,
+              "fur_body_region": 37.92843775019962
+            },
+            "regions_img2": {
+              "background": 2.525202624360486,
+              "ears_region": 13.235682408248579,
+              "eyes_region": 18.550926910512864,
+              "muzzle_region": 25.137058860772452,
+              "fur_body_region": 40.55112919610562
+            }
+          }
+        ]
+      }
+    }
+  },
+  "performance_factors": [
+    "Image quality (blur, motion, resolution)",
+    "Lighting and exposure (including lowlight)",
+    "Pose/angle and occlusion (face partially visible)",
+    "Background leakage (model attention outside the pet)",
+    "Threshold selection for same/different decision",
+    "Dataset imbalance per breed/label and domain shift vs real uploads"
+  ],
+  "gaps_in_parameters_context": [
+    "No supervised annotations for explicit parts (ears/eyes/nose). The models learn implicit features; we approximate them using saliency + region aggregation.",
+    "Label proxy (breed/name) may differ from real same-pet identity matching; this analysis uses available dataset structure.",
+    "BBox is from generic COCO detector; part regions are coarse bands (not true keypoint detection)."
+  ],
+  "architectural_challenges": [
+    "Siamese similarity relies on thresholding; optimal threshold can drift by scenario (e.g., lowlight).",
+    "Capsule/attention models can be harder to interpret than plain CNNs; saliency helps but remains approximate.",
+    "Ensembling (custom + MobileNetV2) improves robustness but adds sensitivity to preprocessing differences between branches."
+  ]
+}
