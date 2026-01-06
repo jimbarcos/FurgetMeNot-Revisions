@@ -133,7 +133,7 @@ if ($report === null && file_exists($cacheReport)) {
         .kpi { background:#f9fbff; border:1px solid #dbe4fb; border-radius:16px; padding:10px 12px; min-width:170px; }
         .kpi .k { color:#4a5a7b; font-size:0.78rem; font-weight:700; }
         .kpi .v { color:#1b3d7f; font-size:1.05rem; font-weight:900; margin-top:2px; }
-        .hm-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin-top:10px; }
+        .hm-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin-top:10px; margin-bottom:20px; }
         .hm-img { width:100%; border-radius:16px; border:1px solid #d9e2f2; background:#f4f7ff; }
         .hm-caption { font-size:0.82rem; color:#4a5a7b; margin-top:6px; line-height:1.35; }
         .err { color:#9b1c1c; background:#fff5f5; border:1px solid #fecaca; padding:10px 12px; border-radius:14px; }
@@ -299,29 +299,31 @@ if ($report === null && file_exists($cacheReport)) {
                         $items = $ex[$mk] ?? [];
                         if (!$items) continue;
                     ?>
-                        <div style="margin-top:16px;" class="params-muted"><strong><?php echo htmlspecialchars($mlabel); ?> heatmap examples (TP/TN/FP/FN)</strong></div>
-                        <div class="hm-grid">
-                            <?php foreach ($items as $it): ?>
-                                <div style="background:#fff; border:1px solid #d9e2f2; border-radius:18px; padding:12px;">
-                                    <div class="params-badge"><?php echo htmlspecialchars(($it['kind'] ?? '') . ' — score=' . round($it['score'] ?? 0, 4)); ?></div>
-                                    <div class="hm-grid" style="grid-template-columns:repeat(2,1fr);">
-                                        <div>
-                                            <img class="hm-img" src="<?php echo htmlspecialchars($it['heatmap1'] ?? ''); ?>" alt="Heatmap 1">
-                                            <div class="hm-caption">Image 1 — <?php echo htmlspecialchars($it['img1'] ?? ''); ?></div>
-                                        </div>
-                                        <div>
-                                            <img class="hm-img" src="<?php echo htmlspecialchars($it['heatmap2'] ?? ''); ?>" alt="Heatmap 2">
-                                            <div class="hm-caption">Image 2 — <?php echo htmlspecialchars($it['img2'] ?? ''); ?></div>
-                                        </div>
-                                    </div>
-                                    <div class="hm-caption">
-                                        Label same: <strong><?php echo htmlspecialchars(($it['label_same'] ?? false) ? 'true' : 'false'); ?></strong>,
-                                        Pred same: <strong><?php echo htmlspecialchars(($it['pred_same'] ?? false) ? 'true' : 'false'); ?></strong>,
-                                        Threshold: <?php echo htmlspecialchars((string)round($it['threshold'] ?? 0, 4)); ?>
+                        <div style="margin-top:48px; margin-bottom:12px;" class="params-muted"><strong><?php echo htmlspecialchars($mlabel); ?> heatmap examples (TP/TN/FP/FN)</strong></div>
+                        <?php foreach ($items as $it): ?>
+                            <div style="background:#f9fbff; border:2px solid #d9e2f2; border-radius:20px; padding:20px; margin-bottom:24px;">
+                                <div style="display:flex; gap:12px; align-items:center; margin-bottom:16px; flex-wrap:wrap;">
+                                    <div class="params-badge" style="font-size:0.88rem;"><?php echo htmlspecialchars(($it['kind'] ?? '') . ' — score=' . round($it['score'] ?? 0, 4)); ?></div>
+                                    <div class="hm-caption" style="margin:0; flex-grow:1;">
+                                        <strong>Label:</strong> <?php echo htmlspecialchars(($it['label_same'] ?? false) ? 'Same' : 'Different'); ?> | 
+                                        <strong>Pred:</strong> <?php echo htmlspecialchars(($it['pred_same'] ?? false) ? 'Same' : 'Different'); ?> | 
+                                        <strong>Threshold:</strong> <?php echo htmlspecialchars((string)round($it['threshold'] ?? 0, 4)); ?>
                                     </div>
                                 </div>
-                            <?php endforeach; ?>
-                        </div>
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+                                    <div>
+                                        <img class="hm-img" src="<?php echo htmlspecialchars($it['heatmap1'] ?? ''); ?>" alt="Heatmap 1" style="width:100%; border-radius:14px;">
+                                        <div class="hm-caption" style="margin-top:10px; font-weight:600;">Image 1</div>
+                                        <div class="hm-caption"><?php echo htmlspecialchars($it['img1'] ?? ''); ?></div>
+                                    </div>
+                                    <div>
+                                        <img class="hm-img" src="<?php echo htmlspecialchars($it['heatmap2'] ?? ''); ?>" alt="Heatmap 2" style="width:100%; border-radius:14px;">
+                                        <div class="hm-caption" style="margin-top:10px; font-weight:600;">Image 2</div>
+                                        <div class="hm-caption"><?php echo htmlspecialchars($it['img2'] ?? ''); ?></div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
                     <?php endforeach; ?>
                 </div>
             <?php endforeach; ?>
